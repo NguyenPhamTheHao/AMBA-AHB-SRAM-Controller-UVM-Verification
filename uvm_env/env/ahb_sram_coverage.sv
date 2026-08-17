@@ -29,7 +29,10 @@ class ahb_sram_coverage extends uvm_subscriber#(ahb_transaction);
             bins bin_boundaries[] = {16'h0000, 16'h7FFC, 16'h8000, 16'hFFFC};
         }
         cross cp_address, cp_hsize, cp_hwrite;
-        cross cp_hsize, cp_byte_offset;
+        cross cp_hsize, cp_byte_offset {
+            ignore_bins b32_unaligned = binsof(cp_hsize.b32) && (!binsof(cp_byte_offset.bin_offset_0));
+            ignore_bins b16_unaligned = binsof(cp_hsize.b16) && (binsof(cp_byte_offset.bin_offset_1) || binsof(cp_byte_offset.bin_offset_3)); 
+        }
     endgroup
 
     function new(string name, uvm_component parent);
@@ -37,7 +40,6 @@ class ahb_sram_coverage extends uvm_subscriber#(ahb_transaction);
         cg_sram_bank = new();
     endfunction: new
 
-    //The signature of write in uvm_subscriber should match in it's child. So the signate is uvm_subscriber::write(T t), since the parameter name should be "t"
     virtual function void write(ahb_transaction t);
         ahb_tr_cov = t;
         cg_sram_bank.sample();

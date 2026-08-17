@@ -1,0 +1,38 @@
+# do run.do
+#   base_test  all_sizes_test  bank_boundary_test  walking_data_test  back_to_back_test  all_byte_offsets_test  reset_write_test  stress_random_test  
+#   build
+# QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
+# Start time: 23:17:31 on Aug 17,2026
+# vlog -coveropt 3 "+cover=bcestf" -sv -f rtl.f 
+# -- Compiling module ahb_slave
+# -- Compiling module byte_lane_masking_control
+# -- Compiling module sram
+# -- Compiling module sram_ctrl
+# 
+# Top level modules:
+# 	sram_ctrl
+# End time: 23:17:31 on Aug 17,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
+# Start time: 23:17:31 on Aug 17,2026
+# vlog -coveropt 3 -sv -f tb.f 
+# -- Compiling interface ahb_if
+# -- Compiling package ahb_agents_pkg
+# -- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+# ** Note: (vlog-2286) ../uvm_env/agent/ahb_agents_pkg.sv(4): Using implicit +incdir+C:/questasim64_10.7c/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+# -- Compiling package ahb_seq_pkg
+# -- Importing package ahb_agents_pkg
+# -- Compiling package ahb_env_pkg
+# -- Compiling package test_pkg
+# -- Importing package ahb_seq_pkg
+# -- Importing package ahb_env_pkg
+# -- Compiling module top
+# -- Importing package test_pkg
+# 
+# Top level modules:
+# 	top
+# End time: 23:17:32 on Aug 17,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+#  clean
+# error deleting "transcript": permission denied
+#  exit

@@ -1,5 +1,5 @@
 class ahb_agent extends uvm_agent;
-    `uvm_component_tils(ahb_agent)
+    `uvm_component_utils(ahb_agent)
 
     ahb_sequencer sequencer;
     ahb_driver driver;
@@ -9,7 +9,7 @@ class ahb_agent extends uvm_agent;
         super.new(name,parent);
     endfunction
 
-    virtual void function build_phase(uvm_phase phase);
+    virtual function void build_phase(uvm_phase phase);
         monitor = ahb_monitor::type_id::create("monitor",this);
         if(get_is_active() ==UVM_ACTIVE) begin
             driver = ahb_driver::type_id::create("driver",this);

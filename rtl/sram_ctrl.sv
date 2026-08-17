@@ -17,10 +17,9 @@ module sram_ctrl (
     logic [31:0] w_sram_wdata; 
     logic        w_sram_write;  
     logic [2:0]  w_sram_size;  
+    logic [15:0] w_sram_addr;
     logic        w_sram_ce;     
     logic [3:0]  w_sram_we;     
-    logic [31:0] w_sram_rdata;  
-
     // MODULE INSTANTIATIONS
     //Instantiate AHB Slave Interface
     ahb_slave u_ahb_slave (
@@ -32,9 +31,7 @@ module sram_ctrl (
         .hsize      (hsize),
         .htrans     (htrans),
         .haddr      (haddr),
-        .hwrdata     (hwrdata),
-        .sram_rdata (w_sram_rdata),      
-        .hrdata     (hrdata),      
+        .hwrdata     (hwrdata), 
         .hreadyout  (hreadyout),
         .hresp      (hresp),  
         .sram_write (w_sram_write), 
@@ -59,9 +56,9 @@ module sram_ctrl (
         .WD         (w_sram_wdata),       
         .WE         (w_sram_we),        
         .CE         (w_sram_ce),         
-        .RD         (w_sram_rdata)        
+        .RD         (hrdata)        
     );
 
     //Logic for sub output
-    assign bank_sel =(sram_ce) ? (sram_addr[15] ? 2'b10 : 2'b01) : 2'b00;
+    assign bank_sel =(w_sram_ce) ? (w_sram_addr[15] ? 2'b10 : 2'b01) : 2'b00;
 endmodule

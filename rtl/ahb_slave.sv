@@ -8,9 +8,7 @@ module ahb_slave(
     input logic [1:0] htrans,
     input logic [15:0] haddr,
     input logic [31:0] hwrdata,
-    input logic [31:0] sram_rdata,
     //Output for Master
-    output logic [31:0] hrdata,
     output logic hreadyout,
     output logic [1:0] hresp,
     //Output for controlling Sram 
@@ -42,7 +40,6 @@ module ahb_slave(
     end
     assign sram_wdata=hwrdata;
     assign sram_write=sram_ce && reg_write;
-    assign hrdata=sram_rdata;
     assign hreadyout=1'b1;
     assign hresp=2'b00;
 endmodule

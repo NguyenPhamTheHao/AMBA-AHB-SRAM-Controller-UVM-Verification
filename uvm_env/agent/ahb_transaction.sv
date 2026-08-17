@@ -2,7 +2,7 @@ class ahb_transaction extends uvm_sequence_item;
     `uvm_object_utils(ahb_transaction)
 
     // Data transaction
-    rand bit hsize;
+    rand bit hwrite;
     rand bit [31:0] haddr;
     rand bit [31:0] hwrdata;
     rand bit [31:0] hrdata;

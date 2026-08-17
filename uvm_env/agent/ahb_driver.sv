@@ -14,7 +14,11 @@ class ahb_driver extends uvm_driver #(ahb_transaction);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        wait(vif_hresetn==1'b1);
+        vif.cb.hsel    <= 1'b0;
+        vif.cb.htrans  <= 2'b00; 
+        vif.cb.hwrite  <= 1'b0;
+        vif.cb.hsize   <= 3'b000;
+        wait(vif.hresetn==1'b1);
         @(vif.cb);
         forever begin  
             seq_item_port.get_next_item(req);
@@ -23,13 +27,13 @@ class ahb_driver extends uvm_driver #(ahb_transaction);
         end
     endtask
 
-    task drive_transasction(ahb_transaction tr);
+    task driver_transaction(ahb_transaction tr);
         //Address phase
         @(vif.cb);
         vif.cb.haddr <= tr.haddr;
         vif.cb.hwrite <=tr.hwrite;
         vif.cb.hsize <= tr.hsize;
-        vif.cb.trans <= 2'b10; //NONSEQ
+        vif.cb.htrans <= 2'b10; //NONSEQ
         vif.cb.hsel  <=1'b1;
 
         if(tr.hwrite) begin
@@ -42,7 +46,7 @@ class ahb_driver extends uvm_driver #(ahb_transaction);
         else begin
             @(vif.cb);
             vif.cb.hsel <=1'b0;
-            vif.sb.trans <=2'b00;
+            vif.cb.htrans <=2'b00;
             @(vif.cb);
             tr.hrdata =vif.cb.hrdata;
         end

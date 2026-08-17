@@ -1,4 +1,4 @@
-class ahb_monitor extends uvm_monitor #(ahb_transaction);
+class ahb_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_monitor)
 
     virtual ahb_if vif;
@@ -6,11 +6,13 @@ class ahb_monitor extends uvm_monitor #(ahb_transaction);
 
     function new(string name= "ahb_monitor", uvm_component parent);
         super.new(name,parent);
+         item_collected_port=new("item_collected_port",this);
     endfunction
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        item_collected_port=new("item_collected_port",this);
+        if (!uvm_config_db#(virtual ahb_if)::get(this, "", "vif", vif))
+            `uvm_fatal("NO_VIF", "Virtual interface not found")
     endfunction
 
     virtual task run_phase(uvm_phase phase);
@@ -29,17 +31,16 @@ class ahb_monitor extends uvm_monitor #(ahb_transaction);
         @(vif.cb);
         tr=ahb_transaction::type_id::create("tr");
         tr.haddr=addr;
-        tr.write=write;
+        tr.hwrite=write;
         tr.hsize=size;
 
         if(write) begin
-            tr.hwrdata = vif.hwdata;
+            tr.hwrdata = vif.hwrdata;
         end
         else begin
             @(vif.cb);
             tr.hrdata=vif.cb.hrdata;
         end
-        `LP_CHECK(vif.cb.bank_sel==2'b10 ? 1 :0),vif.cb.sram_ce);
         item_collected_port.write(tr);
     endtask
 endclass

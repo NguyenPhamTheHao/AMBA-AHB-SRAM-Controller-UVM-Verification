@@ -5,7 +5,6 @@ class ahb_base_seq extends uvm_sequence #(ahb_transaction);
     endfunction
 endclass
 
-// sequence_addr0: fixed bit width, 20 read and write addresses in sequence
 class sequence_addr0 extends ahb_base_seq;
     `uvm_object_utils(sequence_addr0)
     function new(string name = "sequence_addr0");
@@ -22,7 +21,6 @@ class sequence_addr0 extends ahb_base_seq;
     endtask
 endclass
 
-// sequence_addr1: fixed bit width, randomly generates read and write addresses
 class sequence_addr1 extends ahb_base_seq;
     `uvm_object_utils(sequence_addr1)
     function new(string name = "sequence_addr1");
@@ -36,7 +34,6 @@ class sequence_addr1 extends ahb_base_seq;
     endtask
 endclass
 
-// sequence_addr2: randomly wide (8/16/32bit), randomly generates read and write addresses
 class sequence_addr2 extends ahb_base_seq;
     `uvm_object_utils(sequence_addr2)
     function new(string name = "sequence_addr2");
@@ -50,7 +47,6 @@ class sequence_addr2 extends ahb_base_seq;
     endtask
 endclass
 
-// sequence_hsize: fixed bit width, read/write addr and data randomly generated
 class sequence_hsize extends ahb_base_seq;
     `uvm_object_utils(sequence_hsize)
     function new(string name = "sequence_hsize");
@@ -64,7 +60,6 @@ class sequence_hsize extends ahb_base_seq;
     endtask
 endclass
 
-// Exercises 8/16/32-bit writes and reads at the same address
 class seq_all_sizes extends ahb_base_seq;
     `uvm_object_utils(seq_all_sizes)
 
@@ -86,7 +81,6 @@ class seq_all_sizes extends ahb_base_seq;
     endtask 
 endclass: seq_all_sizes
 
-// Targets addresses at bank boundaries (0x7FFC, 0x8000)
 class seq_bank_boundary extends ahb_base_seq;
     `uvm_object_utils(seq_bank_boundary)
 
@@ -101,11 +95,13 @@ class seq_bank_boundary extends ahb_base_seq;
         // R/W at Bank 1 start boundary (0x8000)
         `uvm_do_with(req, {req.haddr == 32'h8000; req.hwrite == 1'b1; req.hsize == 3'b010; req.hwrdata == 32'hCAFEBABE;})
         `uvm_do_with(req, {req.haddr == 32'h8000; req.hwrite == 1'b0; req.hsize == 3'b010;})
+        // R/W at (0x7FFC)
+        `uvm_do_with(req, {req.haddr == 32'hFFFC; req.hwrite == 1'b1; req.hsize == 3'b010; req.hwrdata == 32'hCAFEBABE;})
+        `uvm_do_with(req, {req.haddr == 32'hFFFC; req.hwrite == 1'b0; req.hsize == 3'b010;})
     endtask 
 
 endclass: seq_bank_boundary
 
-// Walking-1 and walking-0 data patterns
 class seq_walking_data extends ahb_base_seq;
     `uvm_object_utils(seq_walking_data)
 
@@ -131,7 +127,6 @@ class seq_walking_data extends ahb_base_seq;
 
 endclass: seq_walking_data
 
-// Rapid consecutive operations without idle gaps
 class seq_back_to_back extends ahb_base_seq;
     `uvm_object_utils(seq_back_to_back)
 
@@ -147,7 +142,6 @@ class seq_back_to_back extends ahb_base_seq;
 
 endclass: seq_back_to_back
 
-// 8-bit access at offsets 0, 1, 2, 3 within a word
 class seq_all_byte_offsets extends ahb_base_seq;
     `uvm_object_utils(seq_all_byte_offsets)
 
@@ -169,7 +163,6 @@ class seq_all_byte_offsets extends ahb_base_seq;
     endtask
 endclass: seq_all_byte_offsets
 
-// Attempts writes during reset to verify they're ignored
 class seq_reset_write extends ahb_base_seq; 
     `uvm_object_utils(seq_reset_write)
 
@@ -200,7 +193,6 @@ class seq_reset_write extends ahb_base_seq;
     endtask 
 endclass: seq_reset_write
 
-// Large number (500+) of fully random operations
 class seq_stress_random extends ahb_base_seq;
     `uvm_object_utils(seq_stress_random)
 
@@ -213,4 +205,4 @@ class seq_stress_random extends ahb_base_seq;
             `uvm_do(req)
         end
     endtask 
-endclass: seq_stress_random
+endclass

@@ -1,0 +1,7 @@
+# do run.do
+# Cannot open macro file: run.do
+#   build
+# invalid command name "build"
+#  run_test walking_data_test
+# invalid command name "run_test"
+#   exit
